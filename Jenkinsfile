@@ -16,4 +16,10 @@ sh "ls -l"
   
   }
   
+  stage("Checkstyle"){
+  
+  sh "mvn checkstyle:checkstyle"
+  
+  }
+  
 }
