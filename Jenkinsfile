@@ -1,4 +1,4 @@
-ip_address = ""
+ip_address
 node(){
 stage("Git checkout"){
 
