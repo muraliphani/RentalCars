@@ -42,7 +42,7 @@ locals {
 
 
 	resource "aws_instance" "tomcat" {
-	  ami                         = "ami-0dba2cb6798deb6d8"
+	  ami                         = "ami-085284d24fe829cd0"
 	  subnet_id                   = "subnet-06733639e38978678"
 	  instance_type               = "t2.micro"
 	  associate_public_ip_address = true
