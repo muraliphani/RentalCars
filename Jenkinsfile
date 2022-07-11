@@ -41,7 +41,7 @@ withCredentials([sshUserPrivateKey(credentialsId: 'tomcatpem', keyFileVariable: 
    sh "${ansible_home}/ansible-playbook tomcat.yml -i inventory"
    }
 }
-
+}
 
  stage("Deploy to tomcat"){
   sh "echo ${ip_address}"
