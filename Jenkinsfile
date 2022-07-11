@@ -36,7 +36,7 @@ stage("configure tomcat on ec2"){
    sh "sed -i 's/<ipaddress>/${ip_address}/g' ansible/inventory"
    sh "cat ansible/inventory"
    sh "cd ansible"
-   sh "${ansible_home}/ansible-playbook ansible/tomcat.yml -i ansible/inventory"
+   sh "${ansible_home}/ansible-playbook ansible/tomcat.yml -i ansible/inventory" -vvvv
    //ansiblePlaybook credentialsId: 'ansible-key', disableHostKeyChecking: true, installation: 'ansible_home', inventory: 'ansible/inventory', playbook: 'ansible/tomcat.yml'
 
    withCredentials([sshUserPrivateKey(credentialsId: 'tomcatpem', keyFileVariable: '', passphraseVariable: '', usernameVariable: '')]) {
