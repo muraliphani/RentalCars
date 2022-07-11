@@ -33,6 +33,9 @@ sh "ls -l"
 stage("configure tomcat on ec2"){
     def ansible_home = tool name: 'ansible_home', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
    sh "echo ${ip_address}"
+   sh "sed -i 's/<ipaddress>/${ip_address}/g' ansible/inventory"
+   ansiblePlaybook credentialsId: 'ansible-key', disableHostKeyChecking: true, installation: 'ansible_home', inventory: 'ansible/inventory', playbook: 'ansible/tomcat.yml'
+
 withCredentials([sshUserPrivateKey(credentialsId: 'tomcatpem', keyFileVariable: '', passphraseVariable: '', usernameVariable: '')]) {
    def directory = "ansible"
    dir(directory){
