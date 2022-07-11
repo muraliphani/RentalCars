@@ -19,10 +19,12 @@ sh "ls -l"
 
      
      dir(directory) {
+      sshagent(['tomcatpem']) {
        sh "terraform init"
 	   sh "terraform apply -auto-approve"
 	   ip_address = sh(script: "terraform output ec2instance_ip", returnStdout: true).toString().trim()
 	   sh "echo ${ip_address}"
+	   }
      }
      }
 
