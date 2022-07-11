@@ -27,7 +27,8 @@ sh "ls -l"
      }
 
 }
- 
+
+
  stage("Deploy to tomcat"){
   sshagent(['tomcat']) {
     sh "scp -o StrictHostKeyChecking=no target/RentalCars.war ec2-user@34.222.223.93:/home/ec2-user/apache-tomcat-9.0.63/webapps"

@@ -1,0 +1,8 @@
+---
+- name: Install tomcat
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+
+  roles:
+  - configure_tomcat
