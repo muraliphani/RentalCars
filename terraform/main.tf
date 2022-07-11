@@ -3,7 +3,6 @@ locals {
 	  subnet_id        = "subnet-06733639e38978678"
 	  ssh_user         = "ubuntu"
 	  key_name         = "project"
-	 // private_key_path = "/var/lib/jenkins/workspace/project.pem"
 	}
 
 
@@ -49,23 +48,6 @@ locals {
 	  associate_public_ip_address = true
 	  security_groups             = [aws_security_group.tomcat.id]
 	  key_name                    = local.key_name
-
-
-	  provisioner "remote-exec" {
-	    inline = ["echo 'Wait until SSH is ready'"]
-
-
-	    connection {
-	      type        = "ssh"
-	      user        = local.ssh_user
-	      //private_key = file(local.private_key_path)
-	      host        = aws_instance.tomcat.public_ip
-	    }
-	  }
-	  provisioner "local-exec" {
-	    command = "ansible-playbook  -i ${aws_instance.tomcat.public_ip} tomcat.yaml"
-        //--private-key ${local.private_key_path}
-	  }
 	}
 
 

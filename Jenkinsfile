@@ -1,3 +1,4 @@
+ip_address = ""
 node(){
 stage("Git checkout"){
 
@@ -19,12 +20,12 @@ sh "ls -l"
 
      
      dir(directory) {
-      sshagent(['tomcatpem']) {
+
        sh "terraform init"
 	   sh "terraform apply -auto-approve"
 	   ip_address = sh(script: "terraform output ec2instance_ip", returnStdout: true).toString().trim()
 	   sh "echo ${ip_address}"
-	   }
+
      }
      }
 
@@ -32,8 +33,9 @@ sh "ls -l"
 
 
  stage("Deploy to tomcat"){
-  sshagent(['tomcat']) {
-    sh "scp -o StrictHostKeyChecking=no target/RentalCars.war ec2-user@34.222.223.93:/home/ec2-user/apache-tomcat-9.0.63/webapps"
+  sh "echo ${ip_address}"
+  sshagent(['tomcatpem']) {
+    sh "scp -o StrictHostKeyChecking=no target/RentalCars.war ubuntu@${ip_address}:/home/ec2-user/apache-tomcat-9.0.63/webapps"
 }
   }
   
