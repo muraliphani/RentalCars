@@ -3,7 +3,7 @@ locals {
 	  subnet_id        = "subnet-06733639e38978678"
 	  ssh_user         = "ubuntu"
 	  key_name         = "project"
-	  private_key_path = "/home/ubuntu/project.pem"
+	  private_key_path = "/var/lib/jenkins/workspace/project.pem"
 	}
 
 
