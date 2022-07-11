@@ -1,7 +1,6 @@
 ---
 - name: Install tomcat
   hosts: web_grp
-  remote_user: ubuntu
   become: yes
 
   roles:
