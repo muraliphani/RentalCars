@@ -3,4 +3,3 @@ serv1 ansible_host=<ipaddress>
 serv1
 [web_grp:vars]
 ansible_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/project.pem

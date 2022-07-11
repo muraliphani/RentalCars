@@ -30,6 +30,17 @@ sh "ls -l"
      }
 
 }
+stage("configure tomcat on ec2"){
+    def ansible_home = tool name: 'ansible_home', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
+   sh "echo ${ip_address}"
+withCredentials([sshUserPrivateKey(credentialsId: 'tomcatpem', keyFileVariable: '', passphraseVariable: '', usernameVariable: '')]) {
+   def directory = "ansible"
+   dir(directory){
+   sh "sed -i 's/<ipaddress>/${ip_address}/g' inventory"
+   //sh "${ansible_home}/ansible -m ping all -i ${ip_address} -i inventory"
+   sh "${ansible_home}/ansible-playbook tomcat.yml -i inventory"
+   }
+}
 
 
  stage("Deploy to tomcat"){
