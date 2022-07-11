@@ -10,11 +10,6 @@ sh "ls -l"
   sh "mvn install"
   }  
   
-  stage("Checkstyle"){
-  
-  sh "mvn checkstyle:checkstyle"
-  
-  }
   
   stage("sonarqube"){
        scannerHome = tool 'SonarQubeScanner'
@@ -26,6 +21,27 @@ sh "ls -l"
         }
   
  }
+ 
+ stage("Create ec2 instance"){
+  withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWSAccess', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+   def directory = "terraform"
+
+     
+     dir(directory) {
+       sh "terraform init"
+	   sh "terraform apply -auto-approve"
+	   ip_address = sh(script: "terraform output ec2instance_ip", returnStdout: true).toString().trim()
+	   sh "echo ${ip_address}"
+     }
+     }
+
+}
+ 
+ stage("Deploy to tomcat"){
+  sshagent(['tomcat']) {
+    sh "scp -o StrictHostKeyChecking=no target/RentalCars.war ec2-user@34.222.223.93:/home/ec2-user/apache-tomcat-9.0.63/webapps"
+}
+  }
   stage("Upload to nexus"){
   nexusArtifactUploader artifacts: [[artifactId: '$BUILD_ID', classifier: '', file: 'target/RentalCars.war', type: 'war']], 
     credentialsId: 'nexusrepologin', groupId: 'prod', nexusUrl: '34.221.193.230:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'devtest1', version: '$BUILD_ID'
