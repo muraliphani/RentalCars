@@ -1,7 +1,7 @@
 node(){
 stage("Git clone")
 {
-git branch: '', credentialsId: 'Gitcreds', url: 'https://github.com/muraliphani/RentalCars.git'
+git branch: 'devops_ci_pipeline', credentialsId: 'Gitcreds', url: 'https://github.com/muraliphani/RentalCars.git'
 
 }
 
