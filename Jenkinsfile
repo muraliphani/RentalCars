@@ -8,32 +8,10 @@ node(){
     {
       sh "mvn package"
     } 
-      stage ("sonar qube analasis")
-      {
-          scannerHome = tool 'SonarQubeScanner'
-       withSonarQubeEnv('sonarQubeServer') {
-            sh "${scannerHome}/bin/sonar-scanner"
-        }
-       timeout(time: 15, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-
-
-      }
-
-      stage("Upload to Nexus"){
+    stage("Upload to Nexus"){
 
       nexusArtifactUploader artifacts: [[artifactId: '$BUILD_ID', classifier: '', file: 'target/RentalCars.war', type: 'war']],
       credentialsId: 'nexus', groupId: 'prod', nexusUrl: '54.183.14.138:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'RentalCars', version: '$BUILD_ID'
       }
-       
-
-
-
-
-
-
-
-
 
 }
