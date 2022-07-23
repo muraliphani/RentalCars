@@ -9,6 +9,13 @@ node(){
     } 
       stage ("sonar qube analasis")
       {
+          scannerHome = tool 'SonarQubeScanner'
+       withSonarQubeEnv('sonarQubeServer') {
+            sh "${scannerHome}/bin/sonar-scanner"
+        }
+       timeout(time: 10, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+        }
 
 
       }
